@@ -72,9 +72,8 @@ class TwitterClient: BDBOAuth1SessionManager {
 
     }
     
-    func retweet(success: (String) -> (), failure: (Error) -> ()) {
-        get("1.1/statuses/retweet/243149503589400576.json", parameters: nil, progress: nil, success: {(task: URLSessionDataTask, response: Any?) -> Void in
-            
+    func retweet(success: (Tweet) -> (), failure: (Error) -> ()) {
+        get("1.1/statuses/retweet/\(Tweet.tweetID!).json", parameters: nil, progress: nil, success: {(task: URLSessionDataTask, response: Any?) -> Void in
             
             
         }, failure: {(task: URLSessionDataTask?, error: Error) -> Void in

@@ -43,9 +43,8 @@ class TweetCell: UITableViewCell {
     }
 
     @IBAction func retweetPressed(_ sender: Any) {
-        let tweetID = thisTweet.ID
         
-        TwitterClient.sharedInstance?.retweet(success: {(tweetID) -> () in
+        TwitterClient.sharedInstance?.retweet(success: {(thisTweet) -> () in
             print("retweet pressed")
             
         }, failure: { (error: Error) -> () in
