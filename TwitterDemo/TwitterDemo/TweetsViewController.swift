@@ -63,37 +63,10 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var timeString = ""
-        let tweet = tweets[indexPath.row]
-        let user = tweet.user
+    
         let cell = tableView.dequeueReusableCell(withIdentifier: "TweetCell", for: indexPath) as! TweetCell
         
-        let difference = Int(Date().timeIntervalSince(tweets[indexPath.row].timeStamp as! Date))
-        
-        if difference < 60 {
-            timeString = "\(difference)s"
-        } else if difference < 3600 {
-            let time = difference/60
-            
-            timeString = "\(time)m"
-        } else if difference < 86400 {
-            let time = difference/3600
-            
-            timeString = "\(time)h"
-        } else {
-            let time = difference/86400
-            timeString = "\(time)d"
-        }
-        
-        cell.thisTweet = tweet
-        cell.userNameLabel.text = user.name! as String?
-        cell.profilePicture.setImageWith(user.profileUrl! as URL)
-        cell.tweetLabel.text = tweet.text as String?
-        cell.twitterHandleLabel.text = "@\(user.screenname!)"
-    
-        cell.retweetedByIcon.image = UIImage(named: "retweet-icon")
-        
-        cell.timeStampLabel.text = timeString
+        cell.thisTweet = tweets[indexPath.row]
         
         
         return cell

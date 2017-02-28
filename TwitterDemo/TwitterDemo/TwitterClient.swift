@@ -72,14 +72,31 @@ class TwitterClient: BDBOAuth1SessionManager {
 
     }
     
-    func retweet(success: (Tweet) -> (), failure: (Error) -> ()) {
-        get("1.1/statuses/retweet/\(Tweet.tweetID!).json", parameters: nil, progress: nil, success: {(task: URLSessionDataTask, response: Any?) -> Void in
+    func retweet (thisTweet: Tweet) {
+        
+        post("1.1/statuses/retweet/\(thisTweet.tweetID!).json", parameters: nil, progress: nil, success: {(task: URLSessionDataTask, response: Any?) -> Void in
+            print("tweet retweeted")
+            
+        
+        }, failure: {(task: URLSessionDataTask?, error: Error) -> Void in
+            print("tweet failed to retweet")
+            print("1.1/statuses/retweet/\(thisTweet.tweetID!).json")
+        
+        })
+    }
+    
+    func favorite (thisTweet: Tweet) {
+        
+        post("1.1/favorites/create.json?id=\(thisTweet.tweetID!)", parameters: nil, progress: nil, success: {(task: URLSessionDataTask, response: Any?) -> Void in
+            print("tweet favorited")
             
             
         }, failure: {(task: URLSessionDataTask?, error: Error) -> Void in
+            print("tweet failed to favorite")
             
         })
     }
+  
     
     func homeTimeLine(success: @escaping ([Tweet]) -> (), failure: @escaping (Error) -> ()){
        
