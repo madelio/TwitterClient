@@ -80,7 +80,6 @@ class TwitterClient: BDBOAuth1SessionManager {
         
         }, failure: {(task: URLSessionDataTask?, error: Error) -> Void in
             print("tweet failed to retweet")
-            print("1.1/statuses/retweet/\(thisTweet.tweetID!).json")
         
         })
     }

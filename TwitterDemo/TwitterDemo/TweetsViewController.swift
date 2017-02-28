@@ -24,6 +24,10 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // used in conjunction with above code, scroll height dimension
         tableView.estimatedRowHeight = 120
         
+        self.navigationController?.navigationBar.barTintColor = UIColor(red: 0, green: 172, blue: 237, alpha: 0.3)
+            //red: 29, green: 202, blue: 255, alpha: 0.0)
+    
+        
         TwitterClient.sharedInstance?.homeTimeLine(success: {(tweets: [Tweet]) -> () in
             self.tweets = tweets
             self.tableView.reloadData()

@@ -20,9 +20,7 @@ class TweetCell: UITableViewCell {
     @IBOutlet weak var timeStampLabel: UILabel!
     @IBOutlet weak var tweetLabel: UILabel!
     @IBOutlet weak var twitterHandleLabel: UILabel!
-    @IBOutlet weak var retweetedUser: UILabel!
     @IBOutlet weak var userNameLabel: UILabel!
-    @IBOutlet weak var retweetedByIcon: UIImageView!
     @IBOutlet weak var profilePicture: UIImageView!
     
     var retweetCount: Int!
@@ -57,7 +55,6 @@ class TweetCell: UITableViewCell {
             profilePicture.setImageWith(user.profileUrl! as URL)
             tweetLabel.text = thisTweet.text as String?
             twitterHandleLabel.text = "@\(user.screenname!)"
-            retweetedByIcon.image = UIImage(named: "retweet-icon")
             timeStampLabel.text = timeString
             
             
@@ -78,14 +75,12 @@ class TweetCell: UITableViewCell {
                     favoriteCountLabel.text = String(favoriteCount)
                 }
             } else {
-                favoriteCountLabel.text = String(favoriteCount)
+                favoriteCountLabel.text = ""
             }
-            
             
             
             retweetButton.setImage(UIImage(named:"retweet-icon"), for: UIControlState.normal)
             replyButton.setImage(UIImage(named:"reply-icon"), for: UIControlState.normal)
-            
             favoriteButton.setImage(UIImage(named:"favor-icon"), for: UIControlState.normal)
 
             
@@ -107,9 +102,13 @@ class TweetCell: UITableViewCell {
 
     @IBAction func favoritePressed(_ sender: Any) {
         TwitterClient.sharedInstance?.favorite(thisTweet: thisTweet)
+        favoriteCount = favoriteCount + 1
+        favoriteCountLabel.text = String(favoriteCount)
     }
     @IBAction func retweetPressed(_ sender: Any) {
         
         TwitterClient.sharedInstance?.retweet(thisTweet: thisTweet)
+        retweetCount = retweetCount + 1
+        retweetCountLabel.text = String(retweetCount)
     }
 }
