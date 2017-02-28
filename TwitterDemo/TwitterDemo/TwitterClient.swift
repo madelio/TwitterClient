@@ -72,6 +72,16 @@ class TwitterClient: BDBOAuth1SessionManager {
 
     }
     
+    func retweet(success: (String) -> (), failure: (Error) -> ()) {
+        get("1.1/statuses/retweet/243149503589400576.json", parameters: nil, progress: nil, success: {(task: URLSessionDataTask, response: Any?) -> Void in
+            
+            
+            
+        }, failure: {(task: URLSessionDataTask?, error: Error) -> Void in
+            
+        })
+    }
+    
     func homeTimeLine(success: @escaping ([Tweet]) -> (), failure: @escaping (Error) -> ()){
        
         get("1.1/statuses/home_timeline.json", parameters: nil, progress: nil, success: {(task: URLSessionDataTask, response: Any?) -> Void in

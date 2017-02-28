@@ -15,8 +15,10 @@ class Tweet: NSObject {
     var retweetCount: Int = 0
     var favoritesCount: Int = 0
     var user: User
+    var ID: NSString?
     
     init(dictionary: NSDictionary) {
+        ID = dictionary["id_str"] as? NSString
         text = dictionary["text"] as? NSString
         retweetCount = (dictionary["retweet_count"] as? Int) ?? 0
         favoritesCount = (dictionary["favourites_count"] as? Int) ?? 0

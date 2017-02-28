@@ -17,8 +17,12 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         super.viewDidLoad()
         self.tableView.delegate = self
         self.tableView.dataSource = self
-     
-       
+        
+        // use whatever the constraint rules tell you to do
+        tableView.rowHeight = UITableViewAutomaticDimension
+        
+        // used in conjunction with above code, scroll height dimension
+        tableView.estimatedRowHeight = 120
         
         TwitterClient.sharedInstance?.homeTimeLine(success: {(tweets: [Tweet]) -> () in
             self.tweets = tweets
@@ -81,13 +85,13 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             timeString = "\(time)d"
         }
         
+        cell.thisTweet = tweet
         cell.userNameLabel.text = user.name! as String?
         cell.profilePicture.setImageWith(user.profileUrl! as URL)
         cell.tweetLabel.text = tweet.text as String?
         cell.twitterHandleLabel.text = "@\(user.screenname!)"
-        cell.retweetIcon.image = UIImage(named: "retweet-icon")
-        cell.replyIcon.image = UIImage(named: "reply-icon")
-        cell.favoriteIcon.image = UIImage(named: "favor-icon")
+    
+        cell.retweetedByIcon.image = UIImage(named: "retweet-icon")
         
         cell.timeStampLabel.text = timeString
         
