@@ -69,7 +69,7 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
         let cell = tableView.dequeueReusableCell(withIdentifier: "TweetCell", for: indexPath) as! TweetCell
-        
+    //    print(tweets[indexPath.row].user.profileUrl!)
         cell.thisTweet = tweets[indexPath.row]
         
         

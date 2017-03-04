@@ -16,18 +16,46 @@ class Tweet: NSObject {
     var favoritesCount: Int = 0
     var user: User
     var tweetID: NSString?
-    var retweetStatus: NSString?
-    var favoriteStatus: NSString?
+    var retweetStatus: Int = 0
+    var favoriteStatus: Int = 0
+    var isRetweet: Bool
+    var retweetedBy: NSString?
     
     init(dictionary: NSDictionary) {
-        tweetID = dictionary["id_str"] as? NSString
-        text = dictionary["text"] as? NSString
-        retweetStatus = dictionary["retweeted"] as? NSString
-        favoriteStatus = dictionary["favorited"] as? NSString
         
-        retweetCount = (dictionary["retweet_count"] as? Int) ?? 0
-        favoritesCount = (dictionary["favourites_count"] as? Int) ?? 0
-        
+        if let origDict = dictionary["retweeted_status"] as? [String: Any] {
+            isRetweet = true
+            
+            let originalTweet = Tweet(dictionary: origDict as NSDictionary)
+            //print(dictionary)
+            tweetID = originalTweet.tweetID
+            text = originalTweet.text
+            retweetStatus = originalTweet.retweetStatus
+            favoriteStatus = originalTweet.favoriteStatus
+            
+            retweetCount = originalTweet.retweetCount
+            favoritesCount = originalTweet.favoritesCount
+            user = originalTweet.user
+            
+            let retweetedByUser = User(dictionary: dictionary["user"] as! NSDictionary)
+            retweetedBy = retweetedByUser.name
+            
+        } else {
+         //   print(dictionary)
+            isRetweet = false
+            tweetID = dictionary["id_str"] as? NSString
+            text = dictionary["text"] as? NSString
+            retweetStatus = (dictionary["retweeted"] as? Int) ?? 0
+            
+            favoriteStatus = (dictionary["favorited"] as? Int) ?? 0
+            
+            retweetCount = (dictionary["retweet_count"] as? Int) ?? 0
+            favoritesCount = (dictionary["favorite_count"] as? Int) ?? 0
+            let userDictionary = dictionary["user"]
+            self.user = User(dictionary: userDictionary as! NSDictionary)
+        }
+
+             
         let timestampString = dictionary["created_at"] as? String
         
         if let timestampString = timestampString {
@@ -36,8 +64,6 @@ class Tweet: NSObject {
             timeStamp = formatter.date(from: timestampString) as NSDate?
         }
         
-        let userDictionary = dictionary["user"]
-        self.user = User(dictionary: userDictionary as! NSDictionary)
         
     }
     

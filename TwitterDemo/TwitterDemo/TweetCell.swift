@@ -11,7 +11,10 @@ import UIKit
 class TweetCell: UITableViewCell {
     
 
+   
+    @IBOutlet weak var retweetedBy: UILabel!
     @IBOutlet weak var retweetButton: UIButton!
+    @IBOutlet weak var retweetedByIcon: UIImageView!
 
     @IBOutlet weak var retweetCountLabel: UILabel!
     @IBOutlet weak var favoriteButton: UIButton!
@@ -30,6 +33,7 @@ class TweetCell: UITableViewCell {
         didSet {
             favoriteCount = thisTweet.favoritesCount
             retweetCount = thisTweet.retweetCount
+        
             
             var timeString = ""
             let user = thisTweet.user
@@ -49,6 +53,14 @@ class TweetCell: UITableViewCell {
             } else {
                 let time = difference/86400
                 timeString = "\(time)d"
+            }
+            
+            if (thisTweet.isRetweet) {
+                 retweetedByIcon.image = UIImage(named: "retweet-icon")
+                retweetedBy.text = "\(thisTweet.retweetedBy!) retweeted" as String?
+                
+            } else {
+                retweetedBy.text = ""
             }
             
             userNameLabel.text = user.name! as String?
@@ -78,10 +90,20 @@ class TweetCell: UITableViewCell {
                 favoriteCountLabel.text = ""
             }
             
+            if thisTweet.retweetStatus == 1 {
+                retweetButton.setImage(UIImage(named:"retweet-icon-green"), for: UIControlState.normal)
+            } else {
+                retweetButton.setImage(UIImage(named:"retweet-icon"), for: UIControlState.normal)
+            }
+            print(thisTweet.favoriteStatus)
+            if thisTweet.favoriteStatus == 1 {
+                favoriteButton.setImage(UIImage(named:"favor-icon-red"), for: UIControlState.normal)
+            } else {
+                favoriteButton.setImage(UIImage(named:"favor-icon"), for: UIControlState.normal)
+            }
             
-            retweetButton.setImage(UIImage(named:"retweet-icon"), for: UIControlState.normal)
             replyButton.setImage(UIImage(named:"reply-icon"), for: UIControlState.normal)
-            favoriteButton.setImage(UIImage(named:"favor-icon"), for: UIControlState.normal)
+         
 
             
         }
@@ -89,7 +111,7 @@ class TweetCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        
+
         profilePicture.layer.cornerRadius = 3
         profilePicture.clipsToBounds = true
     }
