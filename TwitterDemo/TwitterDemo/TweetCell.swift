@@ -94,12 +94,15 @@ class TweetCell: UITableViewCell {
                 retweetButton.setImage(UIImage(named:"retweet-icon-green"), for: UIControlState.normal)
             } else {
                 retweetButton.setImage(UIImage(named:"retweet-icon"), for: UIControlState.normal)
+                
+                    retweetCountLabel.textColor = UIColor.gray
             }
             print(thisTweet.favoriteStatus)
             if thisTweet.favoriteStatus == 1 {
                 favoriteButton.setImage(UIImage(named:"favor-icon-red"), for: UIControlState.normal)
             } else {
                 favoriteButton.setImage(UIImage(named:"favor-icon"), for: UIControlState.normal)
+                    favoriteCountLabel.textColor = UIColor.gray
             }
             
             replyButton.setImage(UIImage(named:"reply-icon"), for: UIControlState.normal)
