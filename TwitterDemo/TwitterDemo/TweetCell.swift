@@ -71,25 +71,9 @@ class TweetCell: UITableViewCell {
             timeStampLabel.text = timeString
             
             
-            if retweetCount > 0 {
-                if retweetCount > 1000 {
-                    retweetCountLabel.text = String (format: "%.1f", Double(retweetCount)/1000) + "k"
-                } else {
-                retweetCountLabel.text = String(retweetCount)
-                }
-            } else {
-                retweetCountLabel.text = ""
-            }
+            retweetCountLabel.text = calcRetweets(retweets: retweetCount)
+            favoriteCountLabel.text = calcFavorites(favorites: favoriteCount)
         
-            if favoriteCount > 0 {
-                if favoriteCount > 1000 {
-                    favoriteCountLabel.text = String (format: "%.1f", Double(favoriteCount)/1000) + "k"
-                } else {
-                    favoriteCountLabel.text = String(favoriteCount)
-                }
-            } else {
-                favoriteCountLabel.text = ""
-            }
             
             if thisTweet.retweetStatus {
                 retweetButton.isSelected = true
@@ -97,7 +81,7 @@ class TweetCell: UITableViewCell {
                 retweetButton.isSelected = false
                 retweetCountLabel.textColor = UIColor.gray
             }
-            print(thisTweet.favoriteStatus)
+
             if thisTweet.favoriteStatus {
                 //favoriteButton.setImage(UIImage(named:"favor-icon-red"), for: UIControlState.normal)
                 favoriteButton.isSelected = true
@@ -131,19 +115,59 @@ class TweetCell: UITableViewCell {
         if !favoriteButton.isSelected {
             TwitterClient.sharedInstance?.favorite(thisTweet: thisTweet)
             favoriteCount = favoriteCount + 1
-            favoriteCountLabel.text = String(favoriteCount)
             favoriteButton.isSelected = true
             
         } else {
             favoriteButton.isSelected = false
+            favoriteCount = favoriteCount - 1
             
         }
+         favoriteCountLabel.text = calcFavorites(favorites: favoriteCount)
     }
     @IBAction func retweetPressed(_ sender: Any) {
         
-        TwitterClient.sharedInstance?.retweet(thisTweet: thisTweet)
-        retweetCount = retweetCount + 1
-        retweetCountLabel.text = String(retweetCount)
-        retweetButton.isSelected = true
+        if !retweetButton.isSelected{
+            TwitterClient.sharedInstance?.retweet(thisTweet: thisTweet)
+            retweetCount = retweetCount + 1
+            retweetButton.isSelected = true
+            
+        } else {
+            retweetCount = retweetCount - 1
+            retweetButton.isSelected = false
+            
+        }
+        
+        retweetCountLabel.text = calcRetweets(retweets: retweetCount)
+    }
+    
+    func calcRetweets(retweets: Int) -> String {
+    var retweetString = ""
+        
+        if retweets > 0 {
+            if retweets > 1000 {
+                retweetString = String (format: "%.1f", Double(retweets)/1000) + "k"
+            } else {
+                retweetString = String(retweets)
+            }
+        } else {
+            retweetString = ""
+        }
+        
+     return retweetString
+    }
+    
+    func calcFavorites(favorites: Int) -> String {
+        var favoritesString = ""
+        if favorites > 0 {
+            if favorites > 1000 {
+                favoritesString = String (format: "%.1f", Double(favorites)/1000) + "k"
+            } else {
+                favoritesString = String(favorites)
+            }
+        } else {
+            favoritesString = ""
+        }
+        
+        return favoritesString
     }
 }
