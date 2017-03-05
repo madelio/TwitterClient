@@ -100,7 +100,7 @@ class TweetDetailsViewController: UIViewController {
         // fix date
         let dateFormatter = DateFormatter()
         
-        dateFormatter.dateFormat = "M/dd/yy HH:mm Z"
+        dateFormatter.dateFormat = "M/dd/yy HH:mm a"
         
         let date = dateFormatter.string(from: timeStamp as! Date)
         
