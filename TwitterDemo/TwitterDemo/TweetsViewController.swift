@@ -12,6 +12,7 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     @IBOutlet weak var tableView: UITableView!
     var tweets: [Tweet]!
+    var currTweet: Tweet!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +25,7 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // used in conjunction with above code, scroll height dimension
         tableView.estimatedRowHeight = 120
         
-        self.navigationController?.navigationBar.barTintColor = UIColor.blue
+        self.navigationController?.navigationBar.barTintColor = UIColor(red: 29/255, green: 202/255, blue: 255/255, alpha: 0.0)
         //red: 29, green: 202, blue: 255, alpha: 0.0)
     
         
@@ -82,14 +83,25 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
+        
+        // Get the new view controller using
+      /*  let viewController:ViewController = segue!.destinationViewController as ViewController
+        let indexPath = self.tableView.indexPathForSelectedRow()
+        viewController.pinCode = self.exams[indexPath.row] */
         // Pass the selected object to the new view controller.
+        let detailTweet = sender as! TweetCell
+        
+        let detailsVC = segue.destination as! TweetDetailsViewController
+        detailsVC.tweet = detailTweet.thisTweet
+        
+       // let vc =
+       // vc.settings =   // ... Search Settings ...
     }
-    */
+ 
 
 }

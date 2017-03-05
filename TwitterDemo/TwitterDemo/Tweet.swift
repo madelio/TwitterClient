@@ -16,8 +16,8 @@ class Tweet: NSObject {
     var favoritesCount: Int = 0
     var user: User
     var tweetID: NSString?
-    var retweetStatus: Int = 0
-    var favoriteStatus: Int = 0
+    var retweetStatus: Bool
+    var favoriteStatus: Bool
     var isRetweet: Bool
     var retweetedBy: NSString?
     
@@ -45,9 +45,9 @@ class Tweet: NSObject {
             isRetweet = false
             tweetID = dictionary["id_str"] as? NSString
             text = dictionary["text"] as? NSString
-            retweetStatus = (dictionary["retweeted"] as? Int) ?? 0
+            retweetStatus = dictionary["retweeted"] as! Bool
             
-            favoriteStatus = (dictionary["favorited"] as? Int) ?? 0
+            favoriteStatus = dictionary["favorited"] as! Bool
             
             retweetCount = (dictionary["retweet_count"] as? Int) ?? 0
             favoritesCount = (dictionary["favorite_count"] as? Int) ?? 0

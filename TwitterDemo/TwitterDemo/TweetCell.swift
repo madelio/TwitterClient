@@ -61,6 +61,7 @@ class TweetCell: UITableViewCell {
                 
             } else {
                 retweetedBy.text = ""
+                retweetedByIcon.image = nil
             }
             
             userNameLabel.text = user.name! as String?
@@ -90,18 +91,19 @@ class TweetCell: UITableViewCell {
                 favoriteCountLabel.text = ""
             }
             
-            if thisTweet.retweetStatus == 1 {
-                retweetButton.setImage(UIImage(named:"retweet-icon-green"), for: UIControlState.normal)
+            if thisTweet.retweetStatus {
+                retweetButton.isSelected = true
             } else {
-                retweetButton.setImage(UIImage(named:"retweet-icon"), for: UIControlState.normal)
-                
-                    retweetCountLabel.textColor = UIColor.gray
+                retweetButton.isSelected = false
+                retweetCountLabel.textColor = UIColor.gray
             }
             print(thisTweet.favoriteStatus)
-            if thisTweet.favoriteStatus == 1 {
-                favoriteButton.setImage(UIImage(named:"favor-icon-red"), for: UIControlState.normal)
+            if thisTweet.favoriteStatus {
+                //favoriteButton.setImage(UIImage(named:"favor-icon-red"), for: UIControlState.normal)
+                favoriteButton.isSelected = true
             } else {
-                favoriteButton.setImage(UIImage(named:"favor-icon"), for: UIControlState.normal)
+               // favoriteButton.setImage(UIImage(named:"favor-icon"), for: UIControlState.normal)
+                favoriteButton.isSelected = false
                     favoriteCountLabel.textColor = UIColor.gray
             }
             
@@ -126,14 +128,22 @@ class TweetCell: UITableViewCell {
     }
 
     @IBAction func favoritePressed(_ sender: Any) {
-        TwitterClient.sharedInstance?.favorite(thisTweet: thisTweet)
-        favoriteCount = favoriteCount + 1
-        favoriteCountLabel.text = String(favoriteCount)
+        if !favoriteButton.isSelected {
+            TwitterClient.sharedInstance?.favorite(thisTweet: thisTweet)
+            favoriteCount = favoriteCount + 1
+            favoriteCountLabel.text = String(favoriteCount)
+            favoriteButton.isSelected = true
+            
+        } else {
+            favoriteButton.isSelected = false
+            
+        }
     }
     @IBAction func retweetPressed(_ sender: Any) {
         
         TwitterClient.sharedInstance?.retweet(thisTweet: thisTweet)
         retweetCount = retweetCount + 1
         retweetCountLabel.text = String(retweetCount)
+        retweetButton.isSelected = true
     }
 }

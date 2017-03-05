@@ -7,12 +7,31 @@
 //
 
 import UIKit
+import AFNetworking
 
 class TweetDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    @IBOutlet weak var screennameLabel: UILabel!
+   
+    @IBOutlet weak var retweetButton: UIButton!
+    @IBOutlet weak var favoriteButton: UIButton!
+    @IBOutlet weak var textLabel: UILabel!
+    @IBOutlet weak var usernameLabel: UILabel!
+    @IBOutlet weak var profileImageButton: UIButton!
+    var tweet: Tweet!
+    
+    @IBOutlet weak var favoritesLabel: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var retweetLabel: UILabel!
 
+    @IBOutlet weak var favoriteCountLabel: UILabel!
+    @IBOutlet weak var retweetCountLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        usernameLabel.text = tweet.user.name as String?
+        screennameLabel.text = tweet.user.screenname as String?
+        profileImageButton.setBackgroundImageFor(UIControlState.normal, with: tweet.user.profileUrl as! URL)
 
         // Do any additional setup after loading the view.
     }
