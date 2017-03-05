@@ -32,7 +32,7 @@ class TweetDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         usernameLabel.text = tweet.user.name as String?
-        screennameLabel.text = tweet.user.screenname as String?
+        screennameLabel.text = "@\(tweet.user.screenname!)"
         textLabel.text = tweet.text as String?
     
         profileImageButton.setImageFor(UIControlState.normal
@@ -51,6 +51,9 @@ class TweetDetailsViewController: UIViewController {
             retweetedByLabel.text = ""
             retweetByIcon.image = nil
         }
+
+       
+        dateLabel.text = formatDate(timeStamp: tweet.timeStamp!)
 
 
         // Do any additional setup after loading the view.
@@ -90,6 +93,22 @@ class TweetDetailsViewController: UIViewController {
         }
         
         return favoritesString
+    }
+  
+    func formatDate(timeStamp: NSDate?) -> String {
+       
+        // fix date
+        let dateFormatter = DateFormatter()
+        
+        dateFormatter.dateFormat = "M/dd/yy HH:mm Z"
+        
+        let date = dateFormatter.string(from: timeStamp as! Date)
+        
+        print ("THIS IS THE DATE " + date)
+        print ("THIS IS THE TIMESTAMP \(timeStamp!)")
+        
+        
+        return date
     }
 
     
