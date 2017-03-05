@@ -9,10 +9,12 @@
 import UIKit
 import AFNetworking
 
-class TweetDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class TweetDetailsViewController: UIViewController {
     
     @IBOutlet weak var screennameLabel: UILabel!
    
+    @IBOutlet weak var retweetedByLabel: UILabel!
+    @IBOutlet weak var retweetByIcon: UIImageView!
     @IBOutlet weak var retweetButton: UIButton!
     @IBOutlet weak var favoriteButton: UIButton!
     @IBOutlet weak var textLabel: UILabel!
@@ -31,7 +33,25 @@ class TweetDetailsViewController: UIViewController, UITableViewDelegate, UITable
         super.viewDidLoad()
         usernameLabel.text = tweet.user.name as String?
         screennameLabel.text = tweet.user.screenname as String?
-        profileImageButton.setBackgroundImageFor(UIControlState.normal, with: tweet.user.profileUrl as! URL)
+        textLabel.text = tweet.text as String?
+    
+        profileImageButton.setImageFor(UIControlState.normal
+            , with: tweet.user.profileUrl as! URL)
+        
+        profileImageButton.imageEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)
+        
+        retweetCountLabel.text = calcRetweets(retweets: tweet.retweetCount)
+        favoriteCountLabel.text = calcFavorites(favorites: tweet.favoritesCount)
+        
+        if (tweet.isRetweet) {
+            retweetByIcon.image = UIImage(named: "retweet-icon")
+            retweetedByLabel.text = "\(tweet.retweetedBy!) retweeted" as String?
+            
+        } else {
+            retweetedByLabel.text = ""
+            retweetByIcon.image = nil
+        }
+
 
         // Do any additional setup after loading the view.
     }
@@ -41,31 +61,35 @@ class TweetDetailsViewController: UIViewController, UITableViewDelegate, UITable
         // Dispose of any resources that can be recreated.
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func calcRetweets(retweets: Int) -> String {
+        var retweetString = ""
         
-        return 0
-    }
-    
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "TweetCell", for: indexPath) as! TweetCell
-        if (indexPath.row == 0) {
-           let cell = tableView.dequeueReusableCell(withIdentifier: "TweetCell", for: indexPath) as! TweetCell
-            //    print(tweets[indexPath.row].user.profileUrl!)
-         //   cell.thisTweet = tweets[indexPath.row]
-            
-            return cell
-            
+        if retweets > 0 {
+            if retweets > 1000 {
+                retweetString = String (format: "%.1f", Double(retweets)/1000) + "k"
+            } else {
+                retweetString = String(retweets)
+            }
+        } else {
+            retweetString = ""
         }
         
-        /*else if (indexPath.row == 1 ){
-            
+        return retweetString
+    }
+    
+    func calcFavorites(favorites: Int) -> String {
+        var favoritesString = ""
+        if favorites > 0 {
+            if favorites > 1000 {
+                favoritesString = String (format: "%.1f", Double(favorites)/1000) + "k"
+            } else {
+                favoritesString = String(favorites)
+            }
         } else {
-            
-        } */
+            favoritesString = ""
+        }
         
-        return cell
-        
+        return favoritesString
     }
 
     
