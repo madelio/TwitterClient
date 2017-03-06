@@ -100,6 +100,9 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             let detailsVC = segue.destination as! TweetDetailsViewController
             detailsVC.tweet = detailTweet.thisTweet
 
+        } else {
+            let msgVC = segue.destination as! ComposeMessageViewController
+            msgVC.fromSegue = "Home"
         }
        // let vc =
        // vc.settings =   // ... Search Settings ...

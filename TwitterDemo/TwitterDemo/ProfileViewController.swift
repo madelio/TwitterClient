@@ -24,10 +24,14 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         
         let composeMssgBtn = UIButton(type: .custom)
+        
         composeMssgBtn.setImage(UIImage(named: "edit-icon")?.withRenderingMode(.alwaysTemplate), for: .normal)
         composeMssgBtn.tintColor = .white
         composeMssgBtn.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        composeMssgBtn.addTarget(self, action: "tweetTo", for: .touchUpInside)
+    
         let msgBarBtn = UIBarButtonItem(customView: composeMssgBtn)
+        
         self.navigationItem.setRightBarButton(msgBarBtn, animated: true)
         
         nameLabel.text = user.name as String?
@@ -49,6 +53,10 @@ class ProfileViewController: UIViewController {
         tweetCountLabel.text = String(user.tweetsCount)
 
         // Do any additional setup after loading the view.
+    }
+    
+    func tweetTo() {
+        self.performSegue(withIdentifier: "tweetAt", sender: self)
     }
 
     override func didReceiveMemoryWarning() {

@@ -10,16 +10,31 @@ import UIKit
 
 class ComposeMessageViewController: UIViewController {
 
-    @IBOutlet weak var messageText: UITextView!
+    @IBOutlet weak var messageText: UITextField!
+   
     @IBOutlet weak var screennameLabel: UILabel!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var profileImageView: UIImageView!
     var user = User.currentUser
+    var fromSegue: String?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         profileImageView.setImageWith(user?.profileUrl as! URL)
         usernameLabel.text = user?.name as String?
         screennameLabel.text = user?.screenname as String?
+ //        print(fromSegue)
+        messageText.beginningOfDocument
+    
+        if fromSegue == "Home" {
+            messageText.placeholder = "What's happening?"
+        }
+        
+       
+        
+        messageText.becomeFirstResponder()
+        
+        
         
 
         // Do any additional setup after loading the view.
@@ -33,7 +48,7 @@ class ComposeMessageViewController: UIViewController {
 
     @IBAction func tweet(_ sender: Any) {
         if messageText.text != "" {
-            TwitterClient.sharedInstance?.sendTweet(message: messageText.text)
+            TwitterClient.sharedInstance?.sendTweet(message: messageText.text!)
         }
         
         if let navController = self.navigationController {
@@ -46,14 +61,22 @@ class ComposeMessageViewController: UIViewController {
             navController.popViewController(animated: true)
         }
     }
-    /*
+    @IBAction func beginEditing(_ sender: Any) {
+        if fromSegue == "Home" {
+            messageText.text = ""
+            messageText.textColor = UIColor.black
+        }
+    }
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
-    */
+    
 
 }
