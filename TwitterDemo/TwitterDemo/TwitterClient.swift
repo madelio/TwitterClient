@@ -95,6 +95,20 @@ class TwitterClient: BDBOAuth1SessionManager {
             
         })
     }
+    
+    func sendTweet (message: String) {
+        let encodedTweetText = message.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        post("1.1/statuses/update.json?status=\(encodedTweetText!)", parameters: nil, progress: nil, success: {(task: URLSessionDataTask, response: Any?) -> Void in
+            print("message tweeted")
+            
+            
+        }, failure: {(task: URLSessionDataTask?, error: Error) -> Void in
+            print("message unable to tweet")
+            
+        })
+        
+        
+    }
   
     
     func homeTimeLine(success: @escaping ([Tweet]) -> (), failure: @escaping (Error) -> ()){

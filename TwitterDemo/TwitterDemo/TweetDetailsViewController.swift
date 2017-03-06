@@ -19,7 +19,8 @@ class TweetDetailsViewController: UIViewController {
     @IBOutlet weak var favoriteButton: UIButton!
     @IBOutlet weak var textLabel: UILabel!
     @IBOutlet weak var usernameLabel: UILabel!
-    @IBOutlet weak var profileImageButton: UIButton!
+
+    @IBOutlet weak var profileImageView: UIImageView!
     var tweet: Tweet!
     
     @IBOutlet weak var favoritesLabel: UILabel!
@@ -31,17 +32,18 @@ class TweetDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        profileImageView.layer.cornerRadius = 3
+        profileImageView.clipsToBounds = true
         usernameLabel.text = tweet.user.name as String?
         screennameLabel.text = "@\(tweet.user.screenname!)"
         textLabel.text = tweet.text as String?
     
-        profileImageButton.setImageFor(UIControlState.normal
-            , with: tweet.user.profileUrl as! URL)
+        profileImageView.setImageWith(tweet.user.profileUrl as! URL)
         
-        profileImageButton.imageEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)
         
         retweetCountLabel.text = calcRetweets(retweets: tweet.retweetCount)
         favoriteCountLabel.text = calcFavorites(favorites: tweet.favoritesCount)
+        dateLabel.text = formatDate(timeStamp: tweet.timeStamp!)
         
         if (tweet.isRetweet) {
             retweetByIcon.image = UIImage(named: "retweet-icon")
@@ -51,9 +53,22 @@ class TweetDetailsViewController: UIViewController {
             retweetedByLabel.text = ""
             retweetByIcon.image = nil
         }
+        
+        if tweet.retweetStatus {
+            retweetButton.isSelected = true
+        } else {
+            retweetButton.isSelected = false
+        }
+        
+        if tweet.favoriteStatus {
 
-       
-        dateLabel.text = formatDate(timeStamp: tweet.timeStamp!)
+            favoriteButton.isSelected = true
+        } else {
+ 
+            favoriteButton.isSelected = false
+
+        }
+    
 
 
         // Do any additional setup after loading the view.
@@ -112,15 +127,54 @@ class TweetDetailsViewController: UIViewController {
     }
 
     
+    @IBAction func faveTweet(_ sender: Any) {
+        var favoriteCount = tweet.favoritesCount
+        
+        if !favoriteButton.isSelected {
+            TwitterClient.sharedInstance?.favorite(thisTweet: tweet)
+            favoriteCount = favoriteCount + 1
+            favoriteButton.isSelected = true
+            
+        } else {
+            favoriteButton.isSelected = false
+            favoriteCount = favoriteCount - 1
+            
+        }
+        favoriteCountLabel.text = calcFavorites(favorites: favoriteCount)
 
-    /*
+    }
+
+    @IBAction func retweetTweet(_ sender: Any) {
+        
+        var retweetCount = tweet.retweetCount
+        if !retweetButton.isSelected{
+            TwitterClient.sharedInstance?.retweet(thisTweet: tweet)
+            retweetCount = retweetCount + 1
+            retweetButton.isSelected = true
+            
+        } else {
+            retweetCount = retweetCount - 1
+            retweetButton.isSelected = false
+            
+        }
+        
+        retweetCountLabel.text = calcRetweets(retweets: retweetCount)
+    }
+    @IBAction func tapped(_ sender: UITapGestureRecognizer) {
+        print("gesture recognized")
+    }
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        
+        let profileVC = segue.destination as! ProfileViewController
+        profileVC.user = self.tweet.user
+
     }
-    */
+    
 
 }

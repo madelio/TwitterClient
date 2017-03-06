@@ -94,11 +94,13 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let indexPath = self.tableView.indexPathForSelectedRow()
         viewController.pinCode = self.exams[indexPath.row] */
         // Pass the selected object to the new view controller.
-        let detailTweet = sender as! TweetCell
-        
-        let detailsVC = segue.destination as! TweetDetailsViewController
-        detailsVC.tweet = detailTweet.thisTweet
-        
+        if segue.identifier == "detailsSegue" {
+            let detailTweet = sender as! TweetCell
+            
+            let detailsVC = segue.destination as! TweetDetailsViewController
+            detailsVC.tweet = detailTweet.thisTweet
+
+        }
        // let vc =
        // vc.settings =   // ... Search Settings ...
     }

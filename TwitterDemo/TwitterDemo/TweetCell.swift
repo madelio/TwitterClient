@@ -141,7 +141,7 @@ class TweetCell: UITableViewCell {
     }
     
     func calcRetweets(retweets: Int) -> String {
-    var retweetString = ""
+        var retweetString = ""
         
         if retweets > 0 {
             if retweets > 1000 {
@@ -153,7 +153,7 @@ class TweetCell: UITableViewCell {
             retweetString = ""
         }
         
-     return retweetString
+        return retweetString
     }
     
     func calcFavorites(favorites: Int) -> String {
