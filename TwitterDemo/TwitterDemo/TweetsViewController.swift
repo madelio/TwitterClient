@@ -25,7 +25,7 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // used in conjunction with above code, scroll height dimension
         tableView.estimatedRowHeight = 120
         
-        self.navigationController?.navigationBar.barTintColor = UIColor(red: 29/255, green: 202/255, blue: 255/255, alpha: 0.0)
+        self.navigationController?.navigationBar.barTintColor = UIColor(red: 49/255, green: 161/255, blue: 240/255, alpha: 0.0)
         //red: 29, green: 202, blue: 255, alpha: 0.0)
     
         

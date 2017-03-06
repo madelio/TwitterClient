@@ -8,9 +8,10 @@
 
 import UIKit
 
-class ComposeMessageViewController: UIViewController {
+class ComposeMessageViewController: UIViewController, UITextViewDelegate {
+    
 
-    @IBOutlet weak var messageText: UITextField!
+    @IBOutlet weak var messageText: UITextView!
    
     @IBOutlet weak var screennameLabel: UILabel!
     @IBOutlet weak var usernameLabel: UILabel!
@@ -20,23 +21,25 @@ class ComposeMessageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        messageText.delegate = self
+        
         profileImageView.setImageWith(user?.profileUrl as! URL)
         usernameLabel.text = user?.name as String?
         screennameLabel.text = user?.screenname as String?
  //        print(fromSegue)
-        messageText.beginningOfDocument
+
     
         if fromSegue == "Home" {
-            messageText.placeholder = "What's happening?"
+            
+            messageText.text = "What's happening?"
+            messageText.textColor = UIColor.lightGray
+            messageText.selectedTextRange = messageText.textRange(from: messageText.beginningOfDocument, to: messageText.beginningOfDocument)
+            
+        } else {
+            messageText.text = fromSegue
         }
-        
-       
-        
-        messageText.becomeFirstResponder()
-        
-        
-        
-
+      // messageText.becomeFirstResponder()
         // Do any additional setup after loading the view.
     }
 
@@ -51,17 +54,15 @@ class ComposeMessageViewController: UIViewController {
             TwitterClient.sharedInstance?.sendTweet(message: messageText.text!)
         }
         
-        if let navController = self.navigationController {
-            navController.popViewController(animated: true)
-        }
+        dismiss(animated: true, completion: nil)
     }
 
     @IBAction func cancelled(_ sender: Any) {
-        if let navController = self.navigationController {
-            navController.popViewController(animated: true)
-        }
+        dismiss(animated: true, completion: nil)
     }
-    @IBAction func beginEditing(_ sender: Any) {
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+    
         if fromSegue == "Home" {
             messageText.text = ""
             messageText.textColor = UIColor.black

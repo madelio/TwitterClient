@@ -53,6 +53,11 @@ class TweetDetailsViewController: UIViewController {
             retweetedByLabel.text = ""
             retweetByIcon.image = nil
         }
+
+        // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         
         if tweet.retweetStatus {
             retweetButton.isSelected = true
@@ -61,17 +66,14 @@ class TweetDetailsViewController: UIViewController {
         }
         
         if tweet.favoriteStatus {
-
+            
             favoriteButton.isSelected = true
         } else {
- 
+            
             favoriteButton.isSelected = false
-
+            
         }
-    
 
-
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
@@ -134,6 +136,7 @@ class TweetDetailsViewController: UIViewController {
             TwitterClient.sharedInstance?.favorite(thisTweet: tweet)
             favoriteCount = favoriteCount + 1
             favoriteButton.isSelected = true
+            tweet.favoriteStatus = true
             
         } else {
             favoriteButton.isSelected = false
@@ -151,6 +154,7 @@ class TweetDetailsViewController: UIViewController {
             TwitterClient.sharedInstance?.retweet(thisTweet: tweet)
             retweetCount = retweetCount + 1
             retweetButton.isSelected = true
+            tweet.retweetStatus = true
             
         } else {
             retweetCount = retweetCount - 1
