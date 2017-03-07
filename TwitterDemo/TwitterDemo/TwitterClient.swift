@@ -135,9 +135,13 @@ class TwitterClient: BDBOAuth1SessionManager {
     }
     
     func replyTweet (message: String, replyID: String) {
-        let encodedTweetText = message.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        //let encodedTweetText = message.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         
-        post("1.1/statuses/update.json?status=\(encodedTweetText!)", parameters: replyID, progress: nil, success: {(task: URLSessionDataTask, response: Any?) -> Void in
+        var paramsDictionary: [String: Any?] = [String: Any?]()
+        paramsDictionary.updateValue(message, forKey: "status")
+        paramsDictionary.updateValue(replyID, forKey: "in_reply_to_status_id")
+        
+        post("1.1/statuses/update.json", parameters: paramsDictionary, progress: nil, success: {(task: URLSessionDataTask, response: Any?) -> Void in
             print("message tweeted")
             
             

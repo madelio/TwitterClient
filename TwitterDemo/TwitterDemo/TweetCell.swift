@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol TweetCellDelegate: class {
+    func tweetCellReplyButtonTappedWithTweetInfo(_ tweetInfo: Tweet)
+}
+
 class TweetCell: UITableViewCell {
     
 
@@ -28,6 +32,12 @@ class TweetCell: UITableViewCell {
     
     var retweetCount: Int!
     var favoriteCount: Int!
+    
+    weak var delegate: TweetCellDelegate?
+    
+    /*
+     self.delegate?.tweetCell(....)
+     */
     
     var thisTweet: Tweet! {
         didSet {
@@ -112,6 +122,10 @@ class TweetCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
+    @IBAction func replyButtonTapped(_ sender: Any) {
+        self.delegate?.tweetCellReplyButtonTappedWithTweetInfo(self.thisTweet)
+    }
+    
     @IBAction func favoritePressed(_ sender: Any) {
         if !favoriteButton.isSelected {
             TwitterClient.sharedInstance?.favorite(thisTweet: thisTweet)

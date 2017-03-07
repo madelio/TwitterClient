@@ -8,11 +8,14 @@
 
 import UIKit
 
-class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, TweetCellDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     var tweets: [Tweet]!
     var currTweet: Tweet!
+    
+    
+    private var tweetInReplyTo: Tweet?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,6 +59,14 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
+    // MARK: - TweetCellDelegate
+    func tweetCellReplyButtonTappedWithTweetInfo(_ tweetInfo: Tweet) {
+        self.tweetInReplyTo = tweetInfo
+        self.performSegue(withIdentifier: "replyButtonInCellToTweet", sender: self)
+    }
+    
     @IBAction func onLogoutButton(_ sender: Any) {
         TwitterClient.sharedInstance?.logout()
     
@@ -76,6 +87,7 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let cell = tableView.dequeueReusableCell(withIdentifier: "TweetCell", for: indexPath) as! TweetCell
     //    print(tweets[indexPath.row].user.profileUrl!)
         cell.thisTweet = tweets[indexPath.row]
+        cell.delegate = self
         
         
         return cell
@@ -112,10 +124,11 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             detailsVC.tweet.favoritesCount = detailTweet.favoriteCount */
  
         
-        } else if segue.identifier == "toReplyfromCell"{
+        } else if segue.identifier == "replyButtonInCellToTweet"{
             let msgVC = segue.destination as! ComposeMessageViewController
             msgVC.fromSegue = "toReply"
-            
+            msgVC.replyID = self.tweetInReplyTo!.tweetID as? String
+            msgVC.replyUser = self.tweetInReplyTo?.user.screenname as? String
         } else {
             let msgVC = segue.destination as! ComposeMessageViewController
             msgVC.fromSegue = "Home"

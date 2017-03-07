@@ -12,7 +12,6 @@ import AFNetworking
 
 class TweetDetailsViewController: UIViewController {
 
-    
     @IBOutlet weak var screennameLabel: UILabel!
    
     @IBOutlet weak var retweetedByLabel: UILabel!
