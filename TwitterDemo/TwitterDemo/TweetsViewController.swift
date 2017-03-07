@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, TweetDetailsViewControllerDelegate {
+class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
     var tweets: [Tweet]!
@@ -46,6 +46,10 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
 
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -94,9 +98,9 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let indexPath = self.tableView.indexPathForSelectedRow()
         viewController.pinCode = self.exams[indexPath.row] */
         // Pass the selected object to the new view controller.
+
         if segue.identifier == "detailsSegue" {
             let detailTweet = sender as! TweetCell
-            
             let detailsVC = segue.destination as! TweetDetailsViewController
             detailsVC.tweet = detailTweet.thisTweet
             //print(detailsVC.favoriteButton?.isSelected)
@@ -104,24 +108,21 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             detailsVC.favorited = detailTweet.favoriteButton!.isSelected
             
             detailsVC.retweeted = detailTweet.retweetButton!.isSelected
-            detailsVC.tweet.retweetCount = detailTweet.retweetCount
-            detailsVC.tweet.favoritesCount = detailTweet.favoriteCount
-            detailsVC.delegate = self
-          
-
+           /* detailsVC.tweet.retweetCount = detailTweet.retweetCount
+            detailsVC.tweet.favoritesCount = detailTweet.favoriteCount */
+ 
+        
+        } else if segue.identifier == "toReplyfromCell"{
+            let msgVC = segue.destination as! ComposeMessageViewController
+            msgVC.fromSegue = "toReply"
+            
         } else {
             let msgVC = segue.destination as! ComposeMessageViewController
             msgVC.fromSegue = "Home"
-            
+        
         }
        // let vc =
        // vc.settings =   // ... Search Settings ...
     }
     
-    func favoriteChange() {
-        
-    }
-    func retweetChange() {
-        
-    }
 }

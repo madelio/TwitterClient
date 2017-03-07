@@ -71,8 +71,8 @@ class TweetCell: UITableViewCell {
             timeStampLabel.text = timeString
             
             
-            retweetCountLabel.text = calcRetweets(retweets: retweetCount)
-            favoriteCountLabel.text = calcFavorites(favorites: favoriteCount)
+            retweetCountLabel.text = calcRetweets(retweets: thisTweet.retweetCount)
+            favoriteCountLabel.text = calcFavorites(favorites: thisTweet.favoritesCount)
         
             
             if thisTweet.retweetStatus {
@@ -97,6 +97,7 @@ class TweetCell: UITableViewCell {
             
         }
     }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -114,32 +115,37 @@ class TweetCell: UITableViewCell {
     @IBAction func favoritePressed(_ sender: Any) {
         if !favoriteButton.isSelected {
             TwitterClient.sharedInstance?.favorite(thisTweet: thisTweet)
-            favoriteCount = favoriteCount + 1
+            thisTweet.favoritesCount = thisTweet.favoritesCount + 1
             favoriteButton.isSelected = true
+            thisTweet.favoriteStatus = true
+            
             
         } else {
             favoriteButton.isSelected = false
-            favoriteCount = favoriteCount - 1
+            thisTweet.favoritesCount = thisTweet.favoritesCount - 1
             TwitterClient.sharedInstance?.unfavorite(thisTweet: thisTweet)
+            thisTweet.favoriteStatus = false
             
         }
-         favoriteCountLabel.text = calcFavorites(favorites: favoriteCount)
+         favoriteCountLabel.text = calcFavorites(favorites: thisTweet.favoritesCount)
     }
     @IBAction func retweetPressed(_ sender: Any) {
         
         if !retweetButton.isSelected{
             TwitterClient.sharedInstance?.retweet(thisTweet: thisTweet)
-            retweetCount = retweetCount + 1
+            thisTweet.retweetCount = thisTweet.retweetCount + 1
             retweetButton.isSelected = true
+            thisTweet.retweetStatus = true
             
         } else {
-            retweetCount = retweetCount - 1
+            thisTweet.retweetCount = thisTweet.retweetCount - 1
+            thisTweet.retweetStatus = false
             retweetButton.isSelected = false
             TwitterClient.sharedInstance?.unretweet(thisTweet: thisTweet)
             
         }
         
-        retweetCountLabel.text = calcRetweets(retweets: retweetCount)
+        retweetCountLabel.text = calcRetweets(retweets: thisTweet.retweetCount)
     }
     
     func calcRetweets(retweets: Int) -> String {

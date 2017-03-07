@@ -18,6 +18,8 @@ class ComposeMessageViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var profileImageView: UIImageView!
     var user = User.currentUser
     var fromSegue: String?
+    var replyID: String?
+    var replyUser: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +38,8 @@ class ComposeMessageViewController: UIViewController, UITextViewDelegate {
             messageText.textColor = UIColor.lightGray
             messageText.selectedTextRange = messageText.textRange(from: messageText.beginningOfDocument, to: messageText.beginningOfDocument)
             
+        } else if fromSegue == "toReply" {
+            messageText.text = "@\(replyUser!)"
         } else {
             messageText.text = fromSegue
         }
@@ -50,8 +54,13 @@ class ComposeMessageViewController: UIViewController, UITextViewDelegate {
     
 
     @IBAction func tweet(_ sender: Any) {
-        if messageText.text != "" {
-            TwitterClient.sharedInstance?.sendTweet(message: messageText.text!)
+        if fromSegue == "toReply" {
+            TwitterClient.sharedInstance?.replyTweet(message: messageText.text!, replyID: self.replyID!)
+            
+        } else {
+            if messageText.text != "" {
+                TwitterClient.sharedInstance?.sendTweet(message: messageText.text!)
+            }
         }
         
         dismiss(animated: true, completion: nil)

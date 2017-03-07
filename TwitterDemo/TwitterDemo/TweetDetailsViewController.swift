@@ -9,13 +9,9 @@
 import UIKit
 import AFNetworking
 
-protocol TweetDetailsViewControllerDelegate: class {
-    func favoriteChange()
-    func retweetChange()
-}
 
 class TweetDetailsViewController: UIViewController {
-    weak var delegate: TweetDetailsViewController?
+
     
     @IBOutlet weak var screennameLabel: UILabel!
    
@@ -67,13 +63,13 @@ class TweetDetailsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         
-        if tweet.retweetStatus || retweeted {
+        if tweet.retweetStatus {
             self.retweetButton.isSelected = true
         } else {
             retweetButton.isSelected = false
         }
-        
-        if tweet.favoriteStatus || favorited {
+    
+        if tweet.favoriteStatus {
             
             favoriteButton.isSelected = true
         } else {
@@ -142,36 +138,37 @@ class TweetDetailsViewController: UIViewController {
         
         if !favoriteButton.isSelected {
             TwitterClient.sharedInstance?.favorite(thisTweet: tweet)
-            favoriteCount = favoriteCount + 1
+            tweet.favoritesCount = tweet.favoritesCount + 1
             favoriteButton.isSelected = true
             tweet.favoriteStatus = true
             
         } else {
             favoriteButton.isSelected = false
-            favoriteCount = favoriteCount - 1
+            tweet.favoritesCount = tweet.favoritesCount - 1
             TwitterClient.sharedInstance?.unfavorite(thisTweet: tweet)
+            tweet.favoriteStatus = false
             
         }
-        favoriteCountLabel.text = calcFavorites(favorites: favoriteCount)
+        favoriteCountLabel.text = calcFavorites(favorites: tweet.favoritesCount)
 
     }
 
     @IBAction func retweetTweet(_ sender: Any) {
         
-        var retweetCount = tweet.retweetCount
         if !retweetButton.isSelected{
             TwitterClient.sharedInstance?.retweet(thisTweet: tweet)
-            retweetCount = retweetCount + 1
+            tweet.retweetCount = tweet.retweetCount + 1
             retweetButton.isSelected = true
             tweet.retweetStatus = true
             
         } else {
-            retweetCount = retweetCount - 1
+            tweet.retweetCount = tweet.retweetCount - 1
             retweetButton.isSelected = false
             TwitterClient.sharedInstance?.unretweet(thisTweet: tweet)
+            tweet.retweetStatus = false
         }
-        self.delegate?.retweetChange()
-        retweetCountLabel.text = calcRetweets(retweets: retweetCount)
+        
+        retweetCountLabel.text = calcRetweets(retweets: tweet.retweetCount)
     }
     @IBAction func tapped(_ sender: UITapGestureRecognizer) {
         print("gesture recognized")
@@ -183,9 +180,15 @@ class TweetDetailsViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-        
-        let profileVC = segue.destination as! ProfileViewController
-        profileVC.user = self.tweet.user
+        if segue.identifier == "profileSegue" {
+            let profileVC = segue.destination as! ProfileViewController
+            profileVC.user = self.tweet.user
+        } else {
+            let mssgVC = segue.destination as! ComposeMessageViewController
+            mssgVC.fromSegue = "toReply"
+            mssgVC.replyID = self.tweet.tweetID as String?
+            mssgVC.replyUser = self.tweet.user.screenname as String?
+        }
 
     }
     
