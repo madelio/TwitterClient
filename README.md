@@ -58,7 +58,7 @@ limitations under the License.
 
 # Project 5 - *Twitter*
 
-Time spent: **30** hours spent in total
+Time spent: **35** hours spent in total
 
 ## User Stories
 
@@ -87,28 +87,33 @@ The following **optional** features are implemented:
 
 The following **additional** features are implemented:
 
-- [ ] List anything else that you can get done to improve the app functionality!
+- [x] List anything else that you can get done to improve the app functionality!
+1. Able to reply from the tweet cell and tweet details page
+2. Able to @ the user on their profile page
+3. Added the "retweeted by" functionality on top of each cell
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
-
-1. 
-2. 
 
 ## Video Walkthrough 
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='https://gifyu.com/images/version2.gif' Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
 Describe any challenges encountered while building the app.
+1. Trying to fix the AutoLayout for the profile page
+2. Being able to obtain the data for a certain tweet by clicking on the reply button (which I had to implement with delegates)
+3. Learning how to programmatically create a UIBarButtonItem since the navigation bar wasn't showing for the profile page
+4. Learning how to work with the API in order to get the original tweet from a retweet
+5. Setting up a new dictionary in Twitter client to store the parameters for the "reply to" functionality
 
 ## License
 
-Copyright [yyyy] [name of copyright owner]
+Copyright [2016] [Jie-Anne Asistio]
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
