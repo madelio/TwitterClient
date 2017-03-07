@@ -120,6 +120,7 @@ class TweetCell: UITableViewCell {
         } else {
             favoriteButton.isSelected = false
             favoriteCount = favoriteCount - 1
+            TwitterClient.sharedInstance?.unfavorite(thisTweet: thisTweet)
             
         }
          favoriteCountLabel.text = calcFavorites(favorites: favoriteCount)
@@ -134,6 +135,7 @@ class TweetCell: UITableViewCell {
         } else {
             retweetCount = retweetCount - 1
             retweetButton.isSelected = false
+            TwitterClient.sharedInstance?.unretweet(thisTweet: thisTweet)
             
         }
         

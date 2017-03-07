@@ -451,7 +451,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="3065.625" y="128.87323943661971"/>
+            <point key="canvasLocation" x="2996" y="129"/>
         </scene>
         <!--Compose Message View Controller-->
         <scene sceneID="fdl-Uq-JXb">
@@ -726,6 +726,6 @@
         <image name="retweet-icon-green" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="E4l-4f-jjt"/>
+        <segue reference="lOd-RC-lTi"/>
     </inferredMetricsTieBreakers>
 </document>

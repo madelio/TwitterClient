@@ -9,7 +9,13 @@
 import UIKit
 import AFNetworking
 
+protocol TweetDetailsViewControllerDelegate: class {
+    func favoriteChange()
+    func retweetChange()
+}
+
 class TweetDetailsViewController: UIViewController {
+    weak var delegate: TweetDetailsViewController?
     
     @IBOutlet weak var screennameLabel: UILabel!
    
@@ -29,6 +35,8 @@ class TweetDetailsViewController: UIViewController {
 
     @IBOutlet weak var favoriteCountLabel: UILabel!
     @IBOutlet weak var retweetCountLabel: UILabel!
+    var favorited: Bool!
+    var retweeted: Bool!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,13 +67,13 @@ class TweetDetailsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         
-        if tweet.retweetStatus {
-            retweetButton.isSelected = true
+        if tweet.retweetStatus || retweeted {
+            self.retweetButton.isSelected = true
         } else {
             retweetButton.isSelected = false
         }
         
-        if tweet.favoriteStatus {
+        if tweet.favoriteStatus || favorited {
             
             favoriteButton.isSelected = true
         } else {
@@ -91,7 +99,7 @@ class TweetDetailsViewController: UIViewController {
                 retweetString = String(retweets)
             }
         } else {
-            retweetString = ""
+            retweetString = "0"
         }
         
         return retweetString
@@ -106,7 +114,7 @@ class TweetDetailsViewController: UIViewController {
                 favoritesString = String(favorites)
             }
         } else {
-            favoritesString = ""
+            favoritesString = "0"
         }
         
         return favoritesString
@@ -141,6 +149,7 @@ class TweetDetailsViewController: UIViewController {
         } else {
             favoriteButton.isSelected = false
             favoriteCount = favoriteCount - 1
+            TwitterClient.sharedInstance?.unfavorite(thisTweet: tweet)
             
         }
         favoriteCountLabel.text = calcFavorites(favorites: favoriteCount)
@@ -159,9 +168,9 @@ class TweetDetailsViewController: UIViewController {
         } else {
             retweetCount = retweetCount - 1
             retweetButton.isSelected = false
-            
+            TwitterClient.sharedInstance?.unretweet(thisTweet: tweet)
         }
-        
+        self.delegate?.retweetChange()
         retweetCountLabel.text = calcRetweets(retweets: retweetCount)
     }
     @IBAction func tapped(_ sender: UITapGestureRecognizer) {

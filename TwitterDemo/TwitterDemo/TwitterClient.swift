@@ -83,6 +83,17 @@ class TwitterClient: BDBOAuth1SessionManager {
         
         })
     }
+    func unretweet (thisTweet: Tweet) {
+        
+        post("1.1/statuses/unretweet/\(thisTweet.tweetID!).json", parameters: nil, progress: nil, success: {(task: URLSessionDataTask, response: Any?) -> Void in
+            print("tweet retweeted")
+            
+            
+        }, failure: {(task: URLSessionDataTask?, error: Error) -> Void in
+            print("tweet failed to retweet")
+            
+        })
+    }
     
     func favorite (thisTweet: Tweet) {
         
@@ -92,6 +103,17 @@ class TwitterClient: BDBOAuth1SessionManager {
             
         }, failure: {(task: URLSessionDataTask?, error: Error) -> Void in
             print("tweet failed to favorite")
+            
+        })
+    }
+    func unfavorite (thisTweet: Tweet) {
+        
+        post("1.1/favorites/destroy.json?id=\(thisTweet.tweetID!)", parameters: nil, progress: nil, success: {(task: URLSessionDataTask, response: Any?) -> Void in
+            print("tweet unfavorited")
+            
+            
+        }, failure: {(task: URLSessionDataTask?, error: Error) -> Void in
+            print("tweet failed to unfavorite")
             
         })
     }

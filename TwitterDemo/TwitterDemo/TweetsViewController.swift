@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, TweetDetailsViewControllerDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     var tweets: [Tweet]!
@@ -99,14 +99,29 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
             let detailsVC = segue.destination as! TweetDetailsViewController
             detailsVC.tweet = detailTweet.thisTweet
+            //print(detailsVC.favoriteButton?.isSelected)
+            print(detailTweet.favoriteButton!.isSelected)
+            detailsVC.favorited = detailTweet.favoriteButton!.isSelected
+            
+            detailsVC.retweeted = detailTweet.retweetButton!.isSelected
+            detailsVC.tweet.retweetCount = detailTweet.retweetCount
+            detailsVC.tweet.favoritesCount = detailTweet.favoriteCount
+            detailsVC.delegate = self
+          
 
         } else {
             let msgVC = segue.destination as! ComposeMessageViewController
             msgVC.fromSegue = "Home"
+            
         }
        // let vc =
        // vc.settings =   // ... Search Settings ...
     }
- 
-
+    
+    func favoriteChange() {
+        
+    }
+    func retweetChange() {
+        
+    }
 }
